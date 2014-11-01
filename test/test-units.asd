@@ -35,6 +35,6 @@
   :depends-on ("lisp-unit" "units")
   :components
   ((:file "test-units")
-   (:file "base-units")
-   (:file "international-system")
-   (:file "us-customary")))
+   (:file "base-units" :depends-on ("test-units"))
+   (:file "international-system" :depends-on ("test-units"))
+   (:file "us-customary" :depends-on ("test-units"))))
