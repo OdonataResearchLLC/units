@@ -26,7 +26,7 @@
 
 (in-package :units)
 
-;;; Base units
+;;; Dimensions vector
 
 (defun dimension-vector (dimension)
   "Return the dimension vector for the base unit."
@@ -52,6 +52,39 @@
        (dvec 0 0 0 0 0 0 1))
       (:nondimensional
        (dvec 0 0 0 0 0 0 0)))))
+
+(defun add-dimensions (dimensions1 dimensions2)
+  "Return the addition of the dimension vectors."
+  (loop
+   with result = (dimension-vector :nondimensional)
+   for index below 7 do
+   (setf
+    (aref result index)
+    (+ (aref dimensions1 index)
+       (aref dimensions2 index)))
+   finally
+   (return result)))
+
+(defun subtract-dimensions (dimensions1 dimensions2)
+  "Return the addition of the dimension vectors."
+  (loop
+   with result = (dimension-vector :nondimensional)
+   for index below 7 do
+   (setf
+    (aref result index)
+    (- (aref dimensions1 index)
+       (aref dimensions2 index)))
+   finally
+   (return result)))
+
+;;; Base units
+
+;;; FIXME: Add a unit test.
+(defgeneric dimensions (object)
+  (:method ((object symbol))
+   (dimensions (symbol-value object)))
+  (:documentation
+   "Return the dimension vector of the object."))
 
 (defclass base-unit ()
   ((name

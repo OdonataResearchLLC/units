@@ -35,7 +35,8 @@
   :components
   ((:file "units")
    (:file "base-units" :depends-on ("units"))
-   (:file "international-system" :depends-on ("base-units"))
+   (:file "derived-units" :depends-on ("base-units"))
+   (:file "international-system" :depends-on ("derived-units"))
    (:file "us-customary" :depends-on ("international-system"))))
 
 (defmethod perform :after
