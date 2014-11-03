@@ -35,6 +35,8 @@
            :name
            :definition
            :conversion-factor)
+  ;; Derived unit object
+  (:export :define-derived-unit :reference-units)
   ;; SI base units
   (:export :meter :kilogram :seconds :ampere :kelvin :mole :candela)
   ;; Non-SI base units

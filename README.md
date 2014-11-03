@@ -1,6 +1,8 @@
 ## units
 
-*units* is a Common Lisp library that provides simple units conversion.
+*units* is a Common Lisp library that provides simple units
+conversion. The basis units for the library are the [International
+System of Units (SI)][SI].
 
 ### Features
 
@@ -55,3 +57,4 @@ with `cl:second`.
 * Expand dimensional analysis capabilities
 
 [ASDF]: <http://common-lisp.net/project/asdf/> "ASDF"
+[SI]: <http://physics.nist.gov/cuu/Units/bibliography.html> "(SI)"
