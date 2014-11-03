@@ -36,5 +36,6 @@
   :components
   ((:file "test-units")
    (:file "base-units" :depends-on ("test-units"))
+   (:file "derived-units" :depends-on ("test-units"))
    (:file "international-system" :depends-on ("test-units"))
    (:file "us-customary" :depends-on ("test-units"))))

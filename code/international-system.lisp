@@ -90,3 +90,7 @@ steradian.")
 (define-base-unit day seconds 86400)
 
 (define-base-unit degree radian (/ pi 180))
+
+;;; Derived SI units for speed
+
+(define-derived-unit meter/second (/ meter seconds))

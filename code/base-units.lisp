@@ -86,6 +86,13 @@
   (:documentation
    "Return the dimension vector of the object."))
 
+;;; FIXME: Add a unit test.
+(defgeneric conversion-factor (object)
+  (:method ((object symbol))
+   (conversion-factor (symbol-value object)))
+  (:documentation
+   "Return the conversion factor of the object."))
+
 (defclass base-unit ()
   ((name
     :type string
@@ -193,7 +200,7 @@ index of the dimensions vector.
        :original-unit original-unit
        :target-unit target-unit)))
 
-;;; Defining units
+;;; Defining base units
 
 (defmacro define-base-unit
           (name reference-unit conversion-factor &optional definition)

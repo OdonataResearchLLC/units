@@ -42,44 +42,106 @@
    (boundp symbol)
    (base-unit-p (symbol-value symbol))))
 
-(defun parse-dimensions-list (dimensions-list)
+(defun parse-dimensions-list (units-list)
   "Parse the list of dimensions to calculate the dimensions vector."
-  (let ((item (first dimensions-list)))
+  (let ((item (first units-list)))
     (cond
      ((combine-units-p item)
       (add-dimensions
-       (parse-dimensions (second dimensions-list))
-       (parse-dimensions (nthcdr 2 dimensions-list))))
+       (parse-dimensions (second units-list))
+       (parse-dimensions (nthcdr 2 units-list))))
      ((divide-units-p item)
       (subtract-dimensions
-       (parse-dimensions (second dimensions-list))
-       (parse-dimensions (nthcdr 2 dimensions-list))))
+       (parse-dimensions (second units-list))
+       (parse-dimensions (nthcdr 2 units-list))))
      ((listp item)
       (add-dimensions
        (parse-dimensions item)
-       (parse-dimensions (rest dimensions-list))))
+       (parse-dimensions (rest units-list))))
      ((unit-token-p item)
       (add-dimensions
        (dimensions item)
-       (parse-dimensions (rest dimensions-list))))
+       (parse-dimensions (rest units-list))))
      (t (error "Unknown dimension: ~A." item)))))
 
-(defun parse-dimensions (dimensions)
+(defun parse-dimensions (units)
   "Parse the dimensions to calculate the dimensions vector."
   (cond
-   ((null dimensions) (dimension-vector :nondimensional))
-   ((listp dimensions)
-    (parse-dimensions-list dimensions))
-   ((unit-token-p dimensions)
-    (dimensions dimensions))
-   (t (error "Unknown dimension: ~A." dimensions))))
+   ((null units) (dimension-vector :nondimensional))
+   ((listp units)
+    (parse-dimensions-list units))
+   ((unit-token-p units)
+    (dimensions units))
+   (t (error "Unknown dimension: ~A." units))))
+
+;;; FIXME: Use the LOOP to walk the list of units and wrap units with
+;;; (conversion-factor unit)
+(defun parse-conversion-factor-list (units-list)
+  "Parse the list of dimensions to calculate the conversion factor."
+  (let ((item (first units-list)))
+    (cond
+     ((combine-units-p item)
+      (* (parse-conversion-factor (second units-list))
+         (parse-conversion-factor (nthcdr 2 units-list))))
+     ((divide-units-p item)
+      (/ (parse-conversion-factor (second units-list))
+         (parse-conversion-factor (nthcdr 2 units-list))))
+     ((listp item)
+      (* (parse-conversion-factor item)
+         (parse-conversion-factor (rest units-list))))
+     ((unit-token-p item)
+      (* (conversion-factor item)
+         (parse-conversion-factor (rest units-list))))
+     (t (error "Unknown dimension: ~A." item)))))
+
+(defun parse-conversion-factor (units)
+  "Parse the conversion factor based on the units."
+  (cond
+   ((null units) 1D0)
+   ((listp units)
+    (parse-conversion-factor-list units))
+   ((unit-token-p units)
+    (conversion-factor units))
+   (t (error "Unknown dimension: ~A." units))))
 
 ;;; Derived units
 
 (defclass derived-unit (base-unit)
-  ((base-dimensions
+  ((reference-units
     :type list
-    :initarg :base-dimensions
-    :reader base-dimensions))
+    :initarg :reference-units
+    :reader reference-units))
   (:documentation
    "A unit derived from base units."))
+
+;;; Defining derived units
+
+(defmacro define-derived-unit
+          (name reference-units &optional conversion-factor definition)
+  "Define the unit with name."
+  (if (symbolp (quote name))
+      (let ((refunit (gensym "REFUNIT-"))
+            (unit (gensym "UNIT-")))
+        `(progn
+           (declaim (special ,name))
+           (let* ((,refunit ',reference-units)
+                  (,unit
+                   (make-instance
+                    'derived-unit
+                    :name (symbol-name ',name)
+                    :definition (or ,definition "N/A")
+                    :dimensions (parse-dimensions ,refunit)
+                    :reference-units ,refunit
+                    :conversion-factor
+                    (* (parse-conversion-factor ,refunit)
+                       (or ,conversion-factor 1D0)))))
+             (setf
+              ;; Unit instance
+              (symbol-value ',name) ,unit
+              ;; Unit conversion
+              (symbol-function ',name)
+              (lambda (value original-unit)
+                (convert value original-unit ,unit))))
+           ;; Return the name
+           ',name))
+      (error "Unit name ~A is not of type SYMBOL." name)))

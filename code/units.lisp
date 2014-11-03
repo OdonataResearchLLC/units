@@ -39,9 +39,13 @@
   (:export :meter :kilogram :seconds :ampere :kelvin :mole :candela)
   ;; Non-SI base units
   (:export :radian :degree :minute :hour :day)
+  ;; SI speed
+  (:export :meter/second)
   ;; US customary length
   (:export :inch :foot :yard :mile :nautical-mile)
   ;; US customary mass
   (:export :ounce :pound :ton)
-  ;; US customray temperature
-  (:export :rankine))
+  ;; US customary temperature
+  (:export :rankine)
+  ;; US customary speed
+  (:export :inch/second :foot/second :mile/hour))

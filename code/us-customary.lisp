@@ -43,3 +43,9 @@
 ;;; Units of temperature
 
 (define-base-unit rankine kelvin (/ 5D0 9D0))
+
+;;; Derived units of speed
+
+(define-derived-unit inch/second meter/second 2.540D-2)
+(define-derived-unit foot/second meter/second 3.048D-1)
+(define-derived-unit mile/hour meter/second 4.4704D-1)

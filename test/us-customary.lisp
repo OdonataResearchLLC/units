@@ -94,3 +94,26 @@
 (define-test rankine
   (:tag :us :temperature)
   (assert-float-equal (/ 9D0 5D0) (units:rankine 1D0 units:kelvin)))
+
+;;; Units of speed
+
+(define-test inch/second
+  "Test inch/second for known units of speed."
+  (:tag :us :speed)
+  (assert-float-equal (/ 2.54D-2) (units:inch/second 1D0 units:meter/second))
+  (assert-float-equal 12D0 (units:inch/second 1D0 units:foot/second))
+  (assert-float-equal 17.6D0 (units:inch/second 1D0 units:mile/hour)))
+
+(define-test foot/second
+  "Test foot/second for known units of speed."
+  (:tag :us :speed)
+  (assert-float-equal (/ 3.048D-1) (units:foot/second 1D0 units:meter/second))
+  (assert-float-equal (/ 12D0) (units:foot/second 1D0 units:inch/second))
+  (assert-float-equal (/ 5.28D3 3.6D3) (units:foot/second 1D0 units:mile/hour)))
+
+(define-test mile/hour
+  "Test mile/hour for known units of speed."
+  (:tag :us :speed)
+  (assert-float-equal (/ 4.4704D-1) (units:mile/hour 1D0 units:meter/second))
+  (assert-float-equal (/ 17.6D0) (units:mile/hour 1D0 units:inch/second))
+  (assert-float-equal (/ 3.6D3 5.28D3) (units:mile/hour 1D0 units:foot/second)))
