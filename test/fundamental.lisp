@@ -1,6 +1,6 @@
 #|
 
- Unit Tests for Base Units Functions
+ Unit Tests for Fundamental Units Functions
 
  Copyright (c) 2014 Odonata Research LLC
 
@@ -211,16 +211,16 @@
     dimension1
     dimension2)))
 
-(define-test base-unit
-  "Test the base unit object."
-  (:tag :base-unit)
+(define-test unit
+  "Test the fundamental unit object."
+  (:tag :fundamental)
   (let* ((name "testlength")
          (definition "An example unit object.")
          (dimensions (units::dimension-vector :length))
          (conversion-factor 1.2D0)
          (unit
           (make-instance
-           'units::base-unit
+           'units::unit
            :name name
            :definition definition
            :dimensions dimensions
@@ -231,16 +231,15 @@
     (assert-float-equal
      conversion-factor (units:conversion-factor unit))))
 
-(define-test base-unit-p
+(define-test unitp
   "Test the base unit predicate."
-  (:tag :base-unit)
-  (assert-true
-   (units::base-unit-p (make-instance 'units::base-unit)))
-  (assert-false (units::base-unit-p 3)))
+  (:tag :fundamental)
+  (assert-true (units::unitp (make-instance 'units::unit)))
+  (assert-false (units::unitp 3)))
 
 (define-test dimensions-equal
   "Test the dimensions equality predicate."
-  (:tag :base-unit)
+  (:tag :fundamental)
   (loop
    for dimension in
    '(:length :time :temperature :mass :current :substance :luminosity)
@@ -250,10 +249,10 @@
 
 (define-test make-base-unit
   "Test the base unit constructor."
-  (:tag :base-unit)
+  (:tag :fundamental)
   ;; Length
   (let ((unit (units::make-base-unit "LENGTH" :length 2D0)))
-    (assert-true (typep unit 'units::base-unit))
+    (assert-true (typep unit 'units::unit))
     (assert-equal "LENGTH" (units:name unit))
     (assert-equal "N/A" (units:definition unit))
     (assert-rational-equal
@@ -261,7 +260,7 @@
     (assert-float-equal 2D0 (units:conversion-factor unit)))
   ;; Time
   (let ((unit (units::make-base-unit "TIME" :time 2D0)))
-    (assert-true (typep unit 'units::base-unit))
+    (assert-true (typep unit 'units::unit))
     (assert-equal "TIME" (units:name unit))
     (assert-equal "N/A" (units:definition unit))
     (assert-rational-equal
@@ -269,7 +268,7 @@
     (assert-float-equal 2D0 (units:conversion-factor unit)))
   ;; Temperature
   (let ((unit (units::make-base-unit "TEMPERATURE" :temperature 2D0)))
-    (assert-true (typep unit 'units::base-unit))
+    (assert-true (typep unit 'units::unit))
     (assert-equal "TEMPERATURE" (units:name unit))
     (assert-equal "N/A" (units:definition unit))
     (assert-rational-equal
@@ -277,7 +276,7 @@
     (assert-float-equal 2D0 (units:conversion-factor unit)))
   ;; Mass
   (let ((unit (units::make-base-unit "MASS" :mass 2D0)))
-    (assert-true (typep unit 'units::base-unit))
+    (assert-true (typep unit 'units::unit))
     (assert-equal "MASS" (units:name unit))
     (assert-equal "N/A" (units:definition unit))
     (assert-rational-equal
@@ -285,7 +284,7 @@
     (assert-float-equal 2D0 (units:conversion-factor unit)))
   ;; Current
   (let ((unit (units::make-base-unit "CURRENT" :current 2D0)))
-    (assert-true (typep unit 'units::base-unit))
+    (assert-true (typep unit 'units::unit))
     (assert-equal "CURRENT" (units:name unit))
     (assert-equal "N/A" (units:definition unit))
     (assert-rational-equal
@@ -293,7 +292,7 @@
     (assert-float-equal 2D0 (units:conversion-factor unit)))
   ;; Substance
   (let ((unit (units::make-base-unit "SUBSTANCE" :substance 2D0)))
-    (assert-true (typep unit 'units::base-unit))
+    (assert-true (typep unit 'units::unit))
     (assert-equal "SUBSTANCE" (units:name unit))
     (assert-equal "N/A" (units:definition unit))
     (assert-rational-equal
@@ -301,7 +300,7 @@
     (assert-float-equal 2D0 (units:conversion-factor unit)))
   ;; Luminosity
   (let ((unit (units::make-base-unit "LUMINOSITY" :luminosity 2D0)))
-    (assert-true (typep unit 'units::base-unit))
+    (assert-true (typep unit 'units::unit))
     (assert-equal "LUMINOSITY" (units:name unit))
     (assert-equal "N/A" (units:definition unit))
     (assert-rational-equal
@@ -310,7 +309,7 @@
 
 (define-test convert
   "Test the fundamental unit conversion function."
-  (:tag :base-unit)
+  (:tag :fundamental)
   (let ((meter (units::make-base-unit "METER" :length 1D0))
         (foot (units::make-base-unit "FOOT" :length 3.048D-1))
         (inch (units::make-base-unit "INCH" :length 2.540D-2)))
@@ -325,3 +324,73 @@
      ;; Convert meter & foot to inch
      (assert-float-equal ival (units:convert mval meter inch))
      (assert-float-equal ival (units:convert fval foot inch)))))
+
+(define-test combine-units-p
+  "Test for the asterisk (*)."
+  (:tag :fundamental :parsing)
+  (assert-true (units::combine-units-p '*))
+  (assert-false (units::combine-units-p '/))
+  (assert-false (units::combine-units-p 'meter)))
+
+(define-test divide-units-p
+  "Test for the slash (/)."
+  (:tag :fundamental :parsing)
+  (assert-true (units::divide-units-p '/))
+  (assert-false (units::divide-units-p '*))
+  (assert-false (units::divide-units-p 'meter)))
+
+(define-test unit-token-p
+  "Test for a unit token."
+  (:tag :fundamental :parsing)
+  (assert-true (units::unit-token-p 'units:meter))
+  (assert-true (units::unit-token-p 'units:inch))
+  (assert-false (units::unit-token-p 'hogshead)))
+
+(define-test parse-dimensions-list
+  "Test the dimensions parsing function for lists."
+  (:tag :fundamental :parsing)
+  ;; Combination
+  (assert-rational-equal
+   #(2 0 0 0 0 0 0)
+   (units::parse-dimensions-list '(* units:meter units:meter)))
+  (assert-rational-equal
+   #(0 0 0 2 0 0 0)
+   (units::parse-dimensions-list '(* units:kilogram units:kilogram)))
+  ;; Division
+  (assert-rational-equal
+   #(1 -2 0 0 0 0 0)
+   (units::parse-dimensions-list
+    '(/ units:meter units:seconds units:seconds)))
+  (assert-rational-equal
+   #(1 -2 0 0 0 0 0)
+   (units::parse-dimensions-list
+    '(/ units:meter (* units:seconds units:seconds))))
+  ;; Rest
+  (assert-rational-equal
+   #(2 0 0 0 0 0 0)
+   (units::parse-dimensions-list '(units:meter units:meter)))
+  (assert-rational-equal
+   #(0 0 0 2 0 0 0)
+   (units::parse-dimensions-list '(units:kilogram units:kilogram)))
+  ;; Unit token
+  (assert-rational-equal
+   #(1 0 0 0 0 0 0) (units::parse-dimensions-list '(units:meter)))
+  (assert-rational-equal
+   #(0 1 0 0 0 0 0) (units::parse-dimensions-list '(units:seconds))))
+
+(define-test parse-dimensions
+  "Test the top-level dimensions parsing function."
+  (:tag :fundamental :parsing)
+  ;; Nondimensional
+  (assert-rational-equal
+   #(0 0 0 0 0 0 0) (units::parse-dimensions ()))
+  ;; Parse a list
+  (assert-rational-equal
+   #(1 -2 0 0 0 0 0)
+   (units::parse-dimensions
+    '(/ units:meter (* units:seconds units:seconds))))
+  ;; Parse a unit
+  (assert-rational-equal
+   #(1 0 0 0 0 0 0) (units::parse-dimensions 'units:meter))
+  (assert-rational-equal
+   #(0 0 0 1 0 0 0) (units::parse-dimensions 'units:kilogram)))

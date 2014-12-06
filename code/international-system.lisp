@@ -36,23 +36,23 @@
 
 ;;; SI base units
 
-(define-base-unit
+(define-unit
  meter base-length 1D0
  "The meter is the length of the path traveled by light in a vacuum
 during a time interval of 1/299,792,458 of a second.")
 
-(define-base-unit
+(define-unit
  kilogram base-mass 1D0
  "The kilogram is the unit of mass; it is equal to the mass of the
 international prototype of the kilogram.")
 
-(define-base-unit
+(define-unit
  seconds base-time 1D0
  "The second is the duration of 9,192,631,770 periods of the radiation
 corresponding to the transition between the two hyperfine levels of
 the ground state of the cesium-133 atom.")
 
-(define-base-unit
+(define-unit
  ampere base-current 1D0
  "The ampere is that constant current which, if maintained in two
 straight parallel conductors of infinite length, of negligible
@@ -60,37 +60,37 @@ circular cross section, and placed 1 meter apart in vacuum, would
 produce between these conductors a force equal to 2E-7 newton per
 meter of length.")
 
-(define-base-unit
+(define-unit
  kelvin base-temperature 1D0
  "The kelvin, unit of thermodynamic temperature, is the fraction
 1/273.16 of the thermodynamic temperature of the triple point of
 water.")
 
-(define-base-unit
+(define-unit
  mole base-substance 1D0
  "The mole is the amount of substance of a system which contains as
 many elementary entites as there are atoms in 0.012 kilogram of carbon
 12.")
 
-(define-base-unit
+(define-unit
  candela base-luminosity 1D0
  "The candela is the luminous intensity, in a given direction, of a
 source that emits monochromatic radiation of frequency 540E+12 hertz
 and that has a radiant intensity in that direction of (1/683) watt per
 steradian.")
 
-(define-base-unit
+(define-unit
  radian nondimensional 1D0
  "The radian is a plane angle in units of m/m.")
 
 ;;; Non-SI units accepted for use
 
-(define-base-unit minute seconds 60)
-(define-base-unit hour seconds 3600)
-(define-base-unit day seconds 86400)
+(define-unit minute seconds 60)
+(define-unit hour seconds 3600)
+(define-unit day seconds 86400)
 
-(define-base-unit degree radian (/ pi 180))
+(define-unit degree radian (/ pi 180))
 
 ;;; Derived SI units for speed
 
-(define-derived-unit meter/second (/ meter seconds))
+(define-unit meter/second (/ meter seconds))

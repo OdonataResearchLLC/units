@@ -28,24 +28,24 @@
 
 ;;; Units of length
 
-(define-base-unit inch meter 2.540D-2)
-(define-base-unit foot meter 3.048D-1)
-(define-base-unit yard meter 9.144D-1)
-(define-base-unit mile meter 1.609344D3)
-(define-base-unit nautical-mile meter 1.852D3)
+(define-unit inch meter 2.540D-2)
+(define-unit foot meter 3.048D-1)
+(define-unit yard meter 9.144D-1)
+(define-unit mile meter 1.609344D3)
+(define-unit nautical-mile meter 1.852D3)
 
 ;;; Units of mass
 
-(define-base-unit ounce kilogram 28.349523125D-3)
-(define-base-unit pound kilogram 453.59237D-3)
-(define-base-unit ton kilogram 907.18474D0)
+(define-unit ounce kilogram 28.349523125D-3)
+(define-unit pound kilogram 453.59237D-3)
+(define-unit ton kilogram 907.18474D0)
 
 ;;; Units of temperature
 
-(define-base-unit rankine kelvin (/ 5D0 9D0))
+(define-unit rankine kelvin (/ 5D0 9D0))
 
 ;;; Derived units of speed
 
-(define-derived-unit inch/second meter/second 2.540D-2)
-(define-derived-unit foot/second meter/second 3.048D-1)
-(define-derived-unit mile/hour meter/second 4.4704D-1)
+(define-unit inch/second meter/second 2.540D-2)
+(define-unit foot/second meter/second 3.048D-1)
+(define-unit mile/hour meter/second 4.4704D-1)

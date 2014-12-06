@@ -50,8 +50,6 @@ with `cl:second`.
 ### TODO
 
 * Implement SI prefixes
-* Merge `define-base-unit` and `define-derived-unit` into
-  `define-unit`
 * Expand the units defined in the library
 * Document the library in the project wiki
 * Expand dimensional analysis capabilities

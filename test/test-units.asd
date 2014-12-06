@@ -29,13 +29,12 @@
 
 (defsystem :test-units
   :description "Unit tests for the unit conversion library."
-  :version "0.1.0"
+  :version "0.2.0"
   :author "Thomas M. Hermann <thomas.m.hermann@odonata-research.com>"
   :license "MIT"
   :depends-on ("lisp-unit" "units")
   :components
   ((:file "test-units")
-   (:file "base-units" :depends-on ("test-units"))
-   (:file "derived-units" :depends-on ("test-units"))
+   (:file "fundamental" :depends-on ("test-units"))
    (:file "international-system" :depends-on ("test-units"))
    (:file "us-customary" :depends-on ("test-units"))))

@@ -29,14 +29,13 @@
 
 (defsystem :units
   :description "Units: Convert units."
-  :version "0.1.0"
+  :version "0.2.0"
   :author "Thomas M. Hermann <thomas.m.hermann@odonata-research.com>"
   :license "MIT"
   :components
   ((:file "units")
-   (:file "base-units" :depends-on ("units"))
-   (:file "derived-units" :depends-on ("base-units"))
-   (:file "international-system" :depends-on ("derived-units"))
+   (:file "fundamental" :depends-on ("units"))
+   (:file "international-system" :depends-on ("fundamental"))
    (:file "us-customary" :depends-on ("international-system"))))
 
 (defmethod perform :after

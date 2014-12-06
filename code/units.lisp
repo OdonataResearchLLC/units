@@ -30,13 +30,13 @@
   (:use :common-lisp)
   ;; Fundamental operations
   (:export :convert)
-  ;; Base unit object
-  (:export :define-base-unit
+  ;; Units object
+  (:export :define-unit
            :name
            :definition
-           :conversion-factor)
-  ;; Derived unit object
-  (:export :define-derived-unit :reference-units)
+           :reference-units
+           :conversion-factor
+           :unitp)
   ;; SI base units
   (:export :meter :kilogram :seconds :ampere :kelvin :mole :candela)
   ;; Non-SI base units
